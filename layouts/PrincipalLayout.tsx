@@ -17,7 +17,7 @@ export const PrincipalLayout: React.FC<PrincipalLayoutProps> = ({
         <title>{title}</title>
         <meta name="description" content={description} />
       </Head>
-      <main>{children}</main>
+      <main className="min-h-screen">{children}</main>
     </>
   );
 };

@@ -11,6 +11,11 @@ export interface IPokemonItem {
   url: string;
 }
 
+export interface Pokemon {
+  name: string;
+  image: string;
+}
+
 //* pokemon
 export interface IPokemon {
   abilities: Ability[];

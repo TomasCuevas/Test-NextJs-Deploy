@@ -7,13 +7,13 @@ import { PrincipalLayout } from "../layouts";
 import { Cart } from "../components";
 
 //* database *//
-import { getInitialPokemons, getPokemonByName } from "../database";
+import { getInitialPokemons } from "../database";
 
 //* interfaces *//
-import { IPokemon, IPokemons } from "../interfaces";
+import { IPokemon, IPokemons, Pokemon } from "../interfaces";
 
 interface HomePageProps {
-  pokemons: string[];
+  pokemons: Pokemon[];
 }
 
 const HomePage: NextPage<HomePageProps> = ({ pokemons }) => {
@@ -24,7 +24,7 @@ const HomePage: NextPage<HomePageProps> = ({ pokemons }) => {
     >
       <article className="min-h-screen flex flex-wrap gap-5 justify-center pt-5 bg-yellow-300">
         {pokemons.map((pokemon) => (
-          <Cart key={pokemon} name={pokemon} />
+          <Cart key={pokemon.name} name={pokemon.name} image={pokemon.image} />
         ))}
       </article>
     </PrincipalLayout>
@@ -33,12 +33,12 @@ const HomePage: NextPage<HomePageProps> = ({ pokemons }) => {
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const { results }: IPokemons = await getInitialPokemons();
-  let pokemons: string[] = [];
-
-  for (let i = 0; i < results.length; i++) {
-    const pokemon = await getPokemonByName(results[i].name);
-    pokemons.push(pokemon.name);
-  }
+  let pokemons: Pokemon[] = results.map((pokemon, index) => ({
+    name: pokemon.name,
+    image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${
+      index + 1
+    }.png`,
+  }));
 
   return {
     props: {
